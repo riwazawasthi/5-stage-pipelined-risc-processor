@@ -22,7 +22,7 @@ SC_MODULE(dataMemory)
         SC_CTOR (dataMemory)
         {
           SC_METHOD (dataMemory_prc);
-          sensitive <<clock.pos();
+          sensitive <<clock.neg();
         }
         //End of constructor
 
