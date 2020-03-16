@@ -2,6 +2,7 @@
 
 SC_MODULE(MEM)
 {
+  sc_in<bool> clk;
   sc_in<sc_uint<16>> alu_result;
   sc_in<sc_uint<16>> mar;
   sc_in<sc_uint<16>> mdr;
@@ -19,6 +20,6 @@ SC_MODULE(MEM)
 
   SC_CTOR(MEM){
     SC_METHOD(MEM_prc);
-    sensitive<<alu_result<<mdr<<dm_read<<dm_write<<reg_write<<Rdest;
+    sensitive<<clk.pos();
   }
 };

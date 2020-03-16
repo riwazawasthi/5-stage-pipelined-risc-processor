@@ -1,5 +1,4 @@
 #include "systemc.h"
-#include "rf.h"
 
 SC_MODULE(decode)
 {

@@ -7,6 +7,7 @@
 SC_MODULE(EX)
 {
 /*********Control signals*********************/
+  sc_in<bool> clk;
   sc_in<bool> c_imm; //immediate control
   sc_in<bool> c_sub; //subtract control
   sc_in<bool> c_carry; //for carry add/subtract
@@ -53,7 +54,7 @@ SC_MODULE(EX)
   SC_CTOR(EX)
   {
     SC_METHOD(EX_prc);
-    sensitive<<imm<<alu_op<<Rsrc_amount_data<<Rdest_data<<Rdest<<PC_in;
+    sensitive<<clk.pos();
   }
 
 };
