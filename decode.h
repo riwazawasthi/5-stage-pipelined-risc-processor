@@ -23,9 +23,6 @@ SC_MODULE(decode)
   sc_out< sc_uint<5> > alu_op;
   sc_out<sc_uint<16>> PC_out;
 
-  sc_out<bool> rf_r_w;
-  sc_out<sc_uint<4>> waddr;
-  sc_out<sc_uint<16>> rf_in;
   sc_out<sc_uint<4>> raddr1, raddr2;
 
 

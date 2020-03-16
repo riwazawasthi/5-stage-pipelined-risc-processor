@@ -12,9 +12,6 @@ void decode::decode_prc(){
   dm_read.write(0);
   dm_write.write(0);
 
-  rf_r_w.write(0);
-  waddr.write(0b0000);
-  rf_in.write(0x0000);
   raddr1.write(instruction.read().range(3,0));
   raddr2.write(instruction.read().range(11,8));
 
@@ -83,6 +80,8 @@ void decode::decode_prc(){
           break;
 
         default:
+         reg_write.write(0);
+          c_imm.write(0);
           break;
 
       }
@@ -161,6 +160,8 @@ void decode::decode_prc(){
           break;
 
         default:
+          reg_write.write(0);
+          c_imm.write(0);
           break;
 
       }
@@ -189,12 +190,16 @@ void decode::decode_prc(){
           alu_op.write(30);
           reg_write.write(0);
           c_imm.write(0);
+          c_jump.write(1);
         }
         else if(opc2==0b1000){
           alu_op.write(31);
           c_imm.write(0);
+          c_jump.write(1);
         }
         else{
+          reg_write.write(0);
+          c_imm.write(0);
 
         }
         break;
@@ -203,9 +208,12 @@ void decode::decode_prc(){
         alu_op.write(29);
         reg_write.write(0);
         c_imm.write(0);
+        c_jump.write(1);
         break;
 
       default:
+        reg_write.write(0);
+        c_imm.write(0);
       break;
 
 

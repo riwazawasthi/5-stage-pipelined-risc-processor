@@ -5,7 +5,10 @@ void fetch::fetch_prc(){
     PC = PC_in.read();
   }
   else{
-    PC = PC + 1;
+    PC = PC+1;
   }
-  PC_out.write(PC);
+
+  PC_to_PM.write(PC.to_uint());
+  sc_int<16> temp = PC +1;
+  PC_to_reg.write(temp.to_uint());
 }

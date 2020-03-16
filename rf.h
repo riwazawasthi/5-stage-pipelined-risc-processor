@@ -17,7 +17,7 @@ SC_MODULE(registerFile)
         sc_out<sc_uint<16> > rout1; // output data 1
         sc_out<sc_uint<16> > rout2; // output data 2
 
-        sc_uint<16>regdata[16];
+        sc_uint<16>regdata[16] = {0};
 
         void registerFile_prc();
         void write(sc_uint<16> a[], int size);

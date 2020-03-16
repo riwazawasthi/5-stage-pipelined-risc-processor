@@ -133,7 +133,7 @@ void EX::EX_prc()
 
    //OR, NOP
    case 16:
-   case 32:
+   
      result = oprnd1 || oprnd2;
      break;
 
@@ -380,5 +380,6 @@ void EX::EX_prc()
   alu_data.write((result).to_uint());
   if(c_store.read()) {mdr.write(oprnd2.to_uint());}
   if(c_load_store.read()) {mar.write((result).to_uint());}
-  PC_alu.write(PC_out.read().to_uint());
+  if(c_jump.read()){PC_alu.write(PC_out.read().to_uint());}
+
 }

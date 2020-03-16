@@ -1,0 +1,168 @@
+$date
+     Mar 16, 2020       03:46:54
+$end
+
+$version
+ SystemC 2.3.3-Accellera --- Feb 14 2020 17:04:42
+$end
+
+$timescale
+     1 ps
+$end
+
+$scope module SystemC $end
+$var wire    1  aaaaa  CLOCK       $end
+$var wire   16  aaaab  instruction [15:0]  $end
+$var wire    1  aaaac  c_imm       $end
+$var wire    1  aaaad  reg_write       $end
+$var wire    1  aaaae  c_sub       $end
+$var wire    1  aaaaf  c_carry       $end
+$var wire    1  aaaag  c_mov       $end
+$var wire    1  aaaah  c_jump       $end
+$var wire    1  aaaai  c_store       $end
+$var wire    1  aaaaj  c_load_store       $end
+$var wire    1  aaaak  dm_read       $end
+$var wire    1  aaaal  dm_write       $end
+$var wire    8  aaaam  imm [7:0]  $end
+$var wire    4  aaaan  Rdest [3:0]  $end
+$var wire    5  aaaao  alu_op [4:0]  $end
+$var wire   16  aaaap  PC_out [15:0]  $end
+$var wire    4  aaaaq  raddr1 [3:0]  $end
+$var wire    4  aaaar  raddr2 [3:0]  $end
+$upscope $end
+$enddefinitions  $end
+
+$comment
+All initial values are dumped below at time 0 sec = 0 timescale units.
+$end
+
+$dumpvars
+1aaaaa
+b0 aaaab
+0aaaac
+1aaaad
+0aaaae
+0aaaaf
+0aaaag
+0aaaah
+0aaaai
+0aaaaj
+0aaaak
+0aaaal
+b0 aaaam
+b0 aaaan
+b0 aaaao
+b0 aaaap
+b0 aaaaq
+b0 aaaar
+$end
+
+#50000
+0aaaaa
+
+#100000
+1aaaaa
+b10101011010 aaaab
+b1011010 aaaam
+b1010 aaaaq
+b101 aaaar
+
+#150000
+0aaaaa
+
+#200000
+1aaaaa
+b10101111010 aaaab
+1aaaaf
+b1111010 aaaam
+b101 aaaan
+b100 aaaao
+
+#250000
+0aaaaa
+
+#300000
+1aaaaa
+
+#350000
+0aaaaa
+
+#400000
+1aaaaa
+b1010010111111111 aaaab
+1aaaac
+b11111111 aaaam
+b1001 aaaao
+b1111 aaaaq
+
+#450000
+0aaaaa
+
+#500000
+1aaaaa
+
+#550000
+0aaaaa
+
+#600000
+1aaaaa
+
+#650000
+0aaaaa
+
+#700000
+1aaaaa
+
+#750000
+0aaaaa
+
+#800000
+1aaaaa
+
+#850000
+0aaaaa
+
+#900000
+1aaaaa
+b10111011010 aaaab
+0aaaac
+0aaaaf
+1aaaag
+b11011010 aaaam
+b10100 aaaao
+b1010 aaaaq
+
+#950000
+0aaaaa
+
+#1000000
+1aaaaa
+b100010101001111 aaaab
+0aaaad
+0aaaag
+1aaaai
+1aaaaj
+1aaaal
+b1001111 aaaam
+b11100 aaaao
+b1111 aaaaq
+
+#1050000
+0aaaaa
+
+#1100000
+1aaaaa
+b100000011001010 aaaab
+1aaaah
+0aaaai
+0aaaaj
+0aaaal
+b11001010 aaaam
+b11110 aaaao
+b1010 aaaaq
+b0 aaaar
+
+#1150000
+0aaaaa
+
+#1200000
