@@ -8,8 +8,16 @@
 #include <bitset>
 SC_MODULE(programMemory)
 {
-  sc_in<sc_uint<16>> pm_in;
+
   sc_out<sc_uint<16>> instr_out;
+  sc_in<bool> clk;
+  sc_in<bool> rst;
+  sc_in<sc_uint<16>> PC_in;
+  sc_in<bool> br_taken;
+
+  sc_out<sc_uint<16>>PC_to_reg;
+
+  sc_uint<16> PC;
 
   std::vector<sc_uint<16>> rom; //read only memory; can be pre-loaded
 
@@ -19,6 +27,6 @@ SC_MODULE(programMemory)
   SC_CTOR (programMemory)
   {
     SC_METHOD (programMemory_prc);
-    sensitive << pm_in;
+    sensitive << rst<<clk.pos();
   }
 };

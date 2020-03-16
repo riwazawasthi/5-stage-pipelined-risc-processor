@@ -1,5 +1,5 @@
 $date
-     Mar 16, 2020       08:06:49
+     Mar 16, 2020       08:34:47
 $end
 
 $version
@@ -23,9 +23,8 @@ $var wire    1  aaaai  c_store       $end
 $var wire   16  aaaaj  alu_result/exe [15:0]  $end
 $var wire   16  aaaak  mdr [15:0]  $end
 $var wire   16  aaaal  mar [15:0]  $end
-$var wire   16  aaaam  PC/fetch [15:0]  $end
-$var wire    1  aaaan  reg_write/WB       $end
-$var wire   16  aaaao  wb_data [15:0]  $end
+$var wire    1  aaaam  reg_write/WB       $end
+$var wire   16  aaaan  wb_data [15:0]  $end
 $upscope $end
 $enddefinitions  $end
 
@@ -46,9 +45,8 @@ b0 aaaag
 b0 aaaaj
 b0 aaaak
 b0 aaaal
-b0 aaaam
-0aaaan
-b0 aaaao
+0aaaam
+b0 aaaan
 $end
 
 #10000
@@ -58,7 +56,6 @@ b11 aaaac
 b10 aaaad
 b1010 aaaae
 1aaaah
-b1 aaaam
 
 #20000
 0aaaaa
@@ -71,7 +68,6 @@ b100 aaaad
 b1100 aaaae
 b1010 aaaaj
 b1010 aaaal
-b10 aaaam
 
 #40000
 0aaaaa
@@ -86,7 +82,6 @@ b1100 aaaaf
 0aaaah
 b1100 aaaaj
 b1100 aaaal
-b11 aaaam
 
 #60000
 0aaaaa
@@ -98,9 +93,8 @@ b10 aaaac
 b100 aaaad
 b0 aaaaf
 b11101 aaaaj
-b100 aaaam
-1aaaan
-b100100 aaaao
+1aaaam
+b100100 aaaan
 
 #80000
 0aaaaa
@@ -114,8 +108,7 @@ b1110 aaaae
 b10 aaaag
 1aaaah
 b0 aaaaj
-b101 aaaam
-b1100 aaaao
+b1100 aaaan
 
 #100000
 0aaaaa
@@ -131,8 +124,7 @@ b100 aaaag
 0aaaah
 b1110 aaaaj
 b1110 aaaal
-b110 aaaam
-b11101 aaaao
+b11101 aaaan
 
 #120000
 0aaaaa
@@ -146,8 +138,7 @@ b1100 aaaae
 b1000 aaaag
 1aaaah
 b11011 aaaaj
-b111 aaaam
-b0 aaaao
+b0 aaaan
 
 #140000
 0aaaaa
@@ -161,8 +152,7 @@ b100 aaaag
 0aaaah
 b1100 aaaaj
 b1100 aaaal
-b1000 aaaam
-b1111111111101000 aaaao
+b1111111111101000 aaaan
 
 #160000
 0aaaaa
@@ -177,8 +167,7 @@ b0 aaaaf
 b110 aaaag
 1aaaah
 1aaaai
-b1001 aaaam
-b11011 aaaao
+b11011 aaaan
 
 #180000
 0aaaaa
@@ -193,8 +182,7 @@ b1111111111101000 aaaaf
 b1000 aaaag
 b1010 aaaaj
 b1010 aaaal
-b1010 aaaam
-b1100 aaaao
+b1100 aaaan
 
 #200000
 0aaaaa
@@ -211,7 +199,6 @@ b10 aaaag
 b1100 aaaaj
 b1111111111101000 aaaak
 b1100 aaaal
-b1011 aaaam
 
 #220000
 0aaaaa
@@ -219,9 +206,8 @@ b1011 aaaam
 #230000
 1aaaaa
 b1001000 aaaaj
-b1100 aaaam
-0aaaan
-b1010 aaaao
+0aaaam
+b1010 aaaan
 
 #240000
 0aaaaa
@@ -229,8 +215,7 @@ b1010 aaaao
 #250000
 1aaaaa
 b1000 aaaag
-b1101 aaaam
-b1100 aaaao
+b1100 aaaan
 
 #260000
 0aaaaa
@@ -238,8 +223,7 @@ b1100 aaaao
 #270000
 1aaaaa
 b100 aaaag
-b1110 aaaam
-b1001000 aaaao
+b1001000 aaaan
 
 #280000
 0aaaaa
@@ -247,41 +231,35 @@ b1001000 aaaao
 #290000
 1aaaaa
 b0 aaaag
-b1111 aaaam
 
 #300000
 0aaaaa
 
 #310000
 1aaaaa
-b10000 aaaam
 
 #320000
 0aaaaa
 
 #330000
 1aaaaa
-b10001 aaaam
 
 #340000
 0aaaaa
 
 #350000
 1aaaaa
-b10010 aaaam
 
 #360000
 0aaaaa
 
 #370000
 1aaaaa
-b10011 aaaam
 
 #380000
 0aaaaa
 
 #390000
 1aaaaa
-b10100 aaaam
 
 #400000

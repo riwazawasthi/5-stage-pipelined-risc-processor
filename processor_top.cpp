@@ -1,5 +1,4 @@
 #include "systemc.h"
-#include "fetch.h"
 #include "pm.h"
 #include "decode.h"
 #include "rf.h"
@@ -12,17 +11,12 @@ int sc_main (int argc, char* argv[])
 {
   sc_signal<bool> clk;
 
-  sc_signal<sc_uint<16>>PC_to_PM, PC_out_mem;
-  sc_signal<sc_uint<16>> PC_to_reg;
+  sc_signal<sc_uint<16>> PC_out_mem, PC_to_reg;
   sc_signal<bool> br_taken_mem;
-
-  fetch Fetch("fetch");   //FETCH
-  Fetch(clk,PC_out_mem,br_taken_mem,PC_to_PM,PC_to_reg);
-
   sc_signal<sc_uint<16>> instruction;
 
   programMemory PM("programMemory");//PROGRAM MEMORY
-  PM(PC_to_PM, instruction);
+  PM(instruction,clk,PC_out_mem,br_taken_mem, PC_to_reg);
 
   sc_signal<bool> c_imm, c_sub, c_carry, c_mov, c_jump, c_store, c_load_store, reg_write, dm_read, dm_write;
   sc_signal<sc_uint<8>> imm;
@@ -131,7 +125,6 @@ int sc_main (int argc, char* argv[])
   sc_trace(fp,alu_data, "alu_result/exe");
   sc_trace(fp,mdr, "mdr");
   sc_trace(fp,mar, "mar");
-  sc_trace(fp,PC_to_PM, "PC/fetch");
   sc_trace(fp,reg_write_out_wb, "reg_write/WB");
   sc_trace(fp, data_out_wb, "wb_data");
 

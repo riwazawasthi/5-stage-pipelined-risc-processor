@@ -2,12 +2,24 @@
 
 void programMemory::programMemory_prc()
 {
-  if(pm_in.read()<rom.size()){
-    instr_out.write(rom[pm_in.read()]);
-  }
-  else{
-    instr_out.write(0x0000);
-  }
+if(!rst){
+  if(br_taken.read()){
+     PC = PC_in.read();
+   }
+   if(PC<rom.size()){
+     instr_out.write(rom[PC]);
+   }
+   else{
+     instr_out.write(0x0000);
+   }
+   PC=PC+1;
+   PC_to_reg.write(PC);
+}
+ else{
+   PC_to_reg.write(0x0000);
+   PC = 0x0000;
+   instr_out.write(0x0000);
+ }
 }
 
 void programMemory::read(){
