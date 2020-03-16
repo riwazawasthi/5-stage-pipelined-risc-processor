@@ -8,7 +8,6 @@
 SC_MODULE(registerFile)
 {
   //---------------Ports declaration-------------
-        sc_in<bool>  clock;
         sc_in<bool>  rf_r_w;
         sc_in<sc_uint<4> > raddr1; // read register address 1
         sc_in<sc_uint<4> > raddr2; // read register address 2
@@ -25,7 +24,7 @@ SC_MODULE(registerFile)
         SC_CTOR (registerFile)
         {
           SC_METHOD (registerFile_prc);
-          sensitive <<clock.pos();
+          sensitive <<rf_r_w<<raddr1<<raddr2<<waddr<<rf_in;
         }
         //End of constructor
 

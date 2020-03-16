@@ -8,7 +8,6 @@
 SC_MODULE(dataMemory)
 {
   //---------------Ports declaration-------------
-        sc_in<bool>  clock;
         sc_in<bool>  dm_read;
         sc_in<bool>  dm_write;
         sc_in<sc_uint<16> > dm_addr; // read register address 1
@@ -22,7 +21,7 @@ SC_MODULE(dataMemory)
         SC_CTOR (dataMemory)
         {
           SC_METHOD (dataMemory_prc);
-          sensitive <<clock.neg();
+          sensitive <<dm_read<<dm_write<<dm_addr<<data_inout;
         }
         //End of constructor
 

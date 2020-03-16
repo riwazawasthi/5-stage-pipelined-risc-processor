@@ -10,12 +10,22 @@ void EX::EX_prc()
   sc_int<17> result;
   sc_uint<16> temp;
   sc_int<16> PC;
+  PC = PC_in.read();
   sc_int<16> immediate = imm.read().to_int();
   signextd_imm = (immediate & 0xFF) | ((immediate & 0x80) ? 0xFF00 : 0);
 
+  //default outputs
+  alu_data.write(0x0000);
+  PC_alu.write(PC_in.read());
+  br_taken.write(0);
+  Rdest_out.write(Rdest.read());
+  reg_write_out.write(reg_write.read());
+  dm_read_out.write(dm_read.read());
+  dm_write_out.write(dm_write.read());
+
   if(c_imm.read()){ //check for immediate operations
     if(c_sub.read()){ //check if a subtract operation
-      oprnd1 = signextd_imm + 0x0001; //one's complement
+      oprnd1 = signextd_imm xor signextd_imm; //one's complement
     }
     else {
       oprnd1 = signextd_imm;
@@ -23,7 +33,7 @@ void EX::EX_prc()
   }
   else{
     if(c_sub.read()){
-      oprnd1 = Rsrc_amount_data.read() + 0x0001; //one's complement
+      oprnd1 = Rsrc_amount_data.read() xor Rsrc_amount_data.read(); //one's complement
     }
     else{
       oprnd1 = Rsrc_amount_data.read();
@@ -37,8 +47,8 @@ void EX::EX_prc()
     oprnd2 = Rdest_data.read();
   }
 
-  if(c_imm_shift.read()){ //check for shift immediate operations
-    sign = sign_bit.read();
+  if(c_imm.read()){ //check for shift immediate operations
+    sign = imm.read().range(4,4);
   }
   else{
     sign = 0;
@@ -52,7 +62,7 @@ void EX::EX_prc()
   }
 
   if(c_carry.read()){
-    carry_bit = C_flag_in.read();
+    carry_bit = C_flag.read();
   }
   else{
     carry_bit = 0;
@@ -171,7 +181,7 @@ void EX::EX_prc()
       result = temp<<oprnd1.range(3,0);
     }
     else{
-      result = temp >> oprnd1.range(3,0);
+      result = temp >> oprnd1.range(4,0).to_uint();
     }
     break;
 
@@ -213,63 +223,63 @@ void EX::EX_prc()
 
    //Bcond
    case 29:
-     PC = PC_in.read();
+     br_taken.write(1);
      if(Rdest.read() == 0){
-       if(Z_flag_in.read()){
+       if(Z_flag.read()){
          PC_out.write(PC + oprnd1);
        }
      }
 
      else if (Rdest.read()== 1){
-       if(Z_flag_in.read()==0){
+       if(Z_flag.read()==0){
          PC_out.write(PC + oprnd1);
        }
      }
 
      else if(Rdest.read() == 11){
-       if(Z_flag_in.read() || N_flag_in.read()){
+       if(Z_flag.read() || N_flag.read()){
          PC_out.write(PC + oprnd1);
        }
      }
 
      else if(Rdest.read() == 2){
-       if(C_flag_in.read()){
+       if(C_flag.read()){
          PC_out.write(PC + oprnd1);
        }
      }
 
      else if(Rdest.read() == 3){
-       if(!C_flag_in.read()){
+       if(!C_flag.read()){
          PC_out.write(PC + oprnd1);
        }
      }
 
      else if(Rdest.read() == 6){
-       if(N_flag_in.read()){
+       if(N_flag.read()){
          PC_out.write(PC + oprnd1);
        }
      }
 
      else if(Rdest.read() == 7){
-       if(!N_flag_in.read()){
+       if(!N_flag.read()){
          PC_out.write(PC + oprnd1);
        }
      }
 
      else if(Rdest.read() == 8){
-       if(F_flag_in.read()){
+       if(F_flag.read()){
          PC_out.write(PC + oprnd1);
        }
      }
 
      else if(Rdest.read()==9){
-       if(!F_flag_in.read()){
+       if(!F_flag.read()){
          PC_out.write(PC + oprnd1);
        }
      }
 
      else if(Rdest.read()==12){
-       if(!N_flag_in.read() && !Z_flag_in.read()){
+       if(!N_flag.read() && !Z_flag.read()){
          PC_out.write(PC + oprnd1);
        }
      }
@@ -285,62 +295,63 @@ void EX::EX_prc()
 
    //Jcond
    case 30:
+   br_taken.write(1);
    if(Rdest.read() == 0){
-     if(Z_flag_in.read()){
+     if(Z_flag.read()){
        PC_out.write(oprnd1);
      }
    }
 
    else if (Rdest.read()== 1){
-     if(Z_flag_in.read()==0){
+     if(Z_flag.read()==0){
        PC_out.write(oprnd1);
      }
    }
 
    else if(Rdest.read() == 11){
-     if(Z_flag_in.read() || N_flag_in.read()){
+     if(Z_flag.read() || N_flag.read()){
        PC_out.write(oprnd1);
      }
    }
 
    else if(Rdest.read() == 2){
-     if(C_flag_in.read()){
+     if(C_flag.read()){
        PC_out.write(oprnd1);
      }
    }
 
    else if(Rdest.read() == 3){
-     if(!C_flag_in.read()){
+     if(!C_flag.read()){
        PC_out.write( oprnd1);
      }
    }
 
    else if(Rdest.read() == 6){
-     if(N_flag_in.read()){
+     if(N_flag.read()){
        PC_out.write(oprnd1);
      }
    }
 
    else if(Rdest.read() == 7){
-     if(!N_flag_in.read()){
+     if(!N_flag.read()){
        PC_out.write(oprnd1);
      }
    }
 
    else if(Rdest.read() == 8){
-     if(F_flag_in.read()){
+     if(F_flag.read()){
        PC_out.write(oprnd1);
      }
    }
 
    else if(Rdest.read()==9){
-     if(!F_flag_in.read()){
+     if(!F_flag.read()){
        PC_out.write(oprnd1);
      }
    }
 
    else if(Rdest.read()==12){
-     if(!N_flag_in.read() && !Z_flag_in.read()){
+     if(!N_flag.read() && !Z_flag.read()){
        PC_out.write(oprnd1);
      }
    }
@@ -356,7 +367,8 @@ void EX::EX_prc()
 
   //JAL
   case 31:
-    result = PC + 1;
+    br_taken.write(1);
+    result = PC;
     PC_out.write(oprnd2);
     break;
 
@@ -368,4 +380,5 @@ void EX::EX_prc()
   alu_data.write((result).to_uint());
   if(c_store.read()) {mdr.write(oprnd2.to_uint());}
   if(c_load_store.read()) {mar.write((result).to_uint());}
+  PC_alu.write(PC_out.read().to_uint());
 }
