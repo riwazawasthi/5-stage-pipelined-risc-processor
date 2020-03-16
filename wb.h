@@ -17,6 +17,6 @@ SC_MODULE(WB){
 
   SC_CTOR(WB){
     SC_METHOD(WB_prc);
-    sensitive<<clk.pos();
+    sensitive<<clk.neg();
   }
 };

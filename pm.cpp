@@ -2,7 +2,7 @@
 
 void programMemory::programMemory_prc()
 {
-if(!rst){
+if(rst){
   if(br_taken.read()){
      PC = PC_in.read();
    }

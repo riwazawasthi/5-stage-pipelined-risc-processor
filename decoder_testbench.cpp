@@ -6,7 +6,7 @@ int sc_main (int argc, char* argv[])
 {
 
            sc_signal <sc_uint<16> > instruction, PC_in;
-           sc_signal<bool> c_imm, c_sub, c_carry, c_mov, c_jump, c_store, c_load_store, reg_write, dm_read, dm_write;
+           sc_signal<bool> c_imm, rf_r,c_sub, c_carry, c_mov, c_jump, c_store, c_load_store, reg_write, dm_read, dm_write;
            sc_signal<sc_uint<8>> imm;
            sc_signal<sc_uint<4>> Rdest;
            sc_signal<sc_uint<5>> alu_op;
@@ -36,6 +36,7 @@ int sc_main (int argc, char* argv[])
            Decode.PC_out(PC_out);
            Decode.raddr1(raddr1);
            Decode.raddr2(raddr2);
+           Decode.rf_r(rf_r);
 
 
 //-----------------for VCD files---------------------------------------------
@@ -60,6 +61,7 @@ int sc_main (int argc, char* argv[])
            sc_trace(fp,PC_out,"PC_out");
            sc_trace(fp,raddr1,"raddr1");
            sc_trace(fp,raddr2,"raddr2");
+           sc_trace(fp,rf_r, "rf_r");
 
 
 
@@ -67,35 +69,60 @@ int sc_main (int argc, char* argv[])
 
            sc_start(100, SC_NS);
 
-           instruction.write(0x055A); // ADD 10, 5
+           instruction.write(0x4203); // ADD 10, 5
 
            sc_start(100, SC_NS);
 
-           instruction.write(0x057A); // ADDC 10, 5
-
-           sc_start(100, SC_NS);
-           sc_start(100, SC_NS);
-
-           instruction.write(0xA5FF);// SUBCI 255, 5
-
-           sc_start(100, SC_NS);
-           sc_start(100, SC_NS);
-           sc_start(100, SC_NS);
-           sc_start(100, SC_NS);
-           sc_start(100, SC_NS);
-
-           instruction.write(0x05DA); //MOV 10,5
+           instruction.write(0x0000); // ADDC 10, 5
 
            sc_start(100, SC_NS);
 
-           instruction.write(0x454F); //Stor 5,15
+
+           instruction.write(0x4405);// SUBCI 255, 5
+
+           sc_start(100, SC_NS);
+
+
+           instruction.write(0x0000); //MOV 10,5
+
+           sc_start(100, SC_NS);
+
+           instruction.write(0x5811); //Stor 5,15
 
 
            sc_start(100, SC_NS);
 
-           instruction.write(0x40CA); //Jcond 10
+           instruction.write(0x0452); //Jcond 10
 
            sc_start(100, SC_NS);
+
+           instruction.write(0x4607);
+           sc_start(100, SC_NS);
+
+           instruction.write(0x000);
+           sc_start(100, SC_NS);
+
+           instruction.write(0x980F);
+           sc_start(100, SC_NS);
+
+           instruction.write(0x4205);
+           sc_start(100, SC_NS);
+
+           instruction.write(0x0000);
+           sc_start(100, SC_NS);
+
+           instruction.write(0x0258);
+           sc_start(100, SC_NS);
+
+           instruction.write(0x4843);
+           sc_start(100, SC_NS);
+
+           instruction.write(0x0000);
+           sc_start(100, SC_NS);
+
+           instruction.write(0x4445);
+           sc_start(100, SC_NS);
+
 
            sc_close_vcd_trace_file(fp);
 

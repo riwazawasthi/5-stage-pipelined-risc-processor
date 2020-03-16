@@ -39,14 +39,14 @@ SC_MODULE(EX)
   sc_signal<bool> F_flag;
   sc_signal<bool> N_flag;
   sc_signal<bool> Z_flag;
-  sc_signal<sc_int<16>> PC_out;
 
-  sc_int<16> oprnd1;
-  sc_int<16> oprnd2;
+
+  sc_uint<16> oprnd1;
+  sc_uint<16> oprnd2;
   bool sub_bit;
   bool sign;
   bool carry_bit;
-  sc_int<16> signextd_imm;
+  sc_uint<16> signextd_imm;
 
 
   void EX_prc();

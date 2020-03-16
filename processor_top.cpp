@@ -9,14 +9,14 @@
 
 int sc_main (int argc, char* argv[])
 {
-  sc_signal<bool> clk;
+  sc_signal<bool> clk, rst;
 
   sc_signal<sc_uint<16>> PC_out_mem, PC_to_reg;
   sc_signal<bool> br_taken_mem;
   sc_signal<sc_uint<16>> instruction;
 
   programMemory PM("programMemory");//PROGRAM MEMORY
-  PM(instruction,clk,PC_out_mem,br_taken_mem, PC_to_reg);
+  PM(instruction,clk,rst,PC_out_mem,br_taken_mem, PC_to_reg);
 
   sc_signal<bool> c_imm, c_sub, c_carry, c_mov, c_jump, c_store, c_load_store, reg_write, dm_read, dm_write;
   sc_signal<sc_uint<8>> imm;
@@ -24,11 +24,12 @@ int sc_main (int argc, char* argv[])
   sc_signal<sc_uint<5>> alu_op;
   sc_signal<sc_uint<16>> PC_out;
   sc_signal<sc_uint<4>> raddr1, raddr2;
+  sc_signal<bool> rf_r;
 
   decode Decode("decode");//DECODE
   Decode(instruction, clk, PC_to_reg, c_imm, c_sub, c_carry,
   c_mov, c_jump, c_store, c_load_store, reg_write, dm_read, dm_write,
-  imm, Rdest, alu_op, PC_out, raddr1, raddr2);
+  imm, Rdest, alu_op, PC_out, raddr1, raddr2, rf_r);
 
 
   sc_signal<sc_uint<16>> rout1, rout2;
@@ -36,7 +37,7 @@ int sc_main (int argc, char* argv[])
   sc_signal<sc_uint<4>> Rdest_out_wb;
   sc_signal<sc_uint<16>> data_out_wb;
   registerFile RF("registerFile"); //Register File
-  RF(reg_write_out_wb,raddr1, raddr2, Rdest_out_wb,data_out_wb, rout1, rout2);
+  RF(rf_r, reg_write_out_wb,raddr1, raddr2, Rdest_out_wb,data_out_wb, rout1, rout2);
 
   sc_signal<sc_uint<16>> alu_data;
   sc_signal<sc_uint<4>> Rdest_out;
@@ -50,7 +51,7 @@ int sc_main (int argc, char* argv[])
   EX Exec("EX"); //EXECUTE
   Exec(clk, c_imm, c_sub, c_carry,
   c_mov, c_jump, c_store, c_load_store, reg_write, dm_read, dm_write,
-  imm, rout1, rout2, Rdest, alu_op, PC_out, alu_data, Rdest_out,
+  imm, rout1, rout2, raddr2, alu_op, PC_out, alu_data, Rdest_out,
   br_taken_alu, mdr, mar, reg_write_out, dm_read_out, dm_write_out, PC_alu);
 
   sc_signal<sc_uint<16>> alu_result_mem;
@@ -92,16 +93,22 @@ int sc_main (int argc, char* argv[])
   DM.write(d,15);
 
   std::vector<sc_uint<16>> v;
-  v.push_back(0x4203);
-  v.push_back(0x4405);
-  v.push_back(0x5811);
-  v.push_back(0x0452);
-  v.push_back(0x4607);
-  v.push_back(0x980F);
-  v.push_back(0x4205);
-  v.push_back(0x0258);
-  v.push_back(0x4843);
-  v.push_back(0x4445);
+  v.push_back(0x4203); //load r2, r3
+  v.push_back(0x0000); //nop
+  v.push_back(0x4405); //load r4, r5
+  v.push_back(0x0000); //nop
+  v.push_back(0x5811); //addi 17,r8
+  v.push_back(0x0452); //add r2, r4
+  v.push_back(0x4607); //load r6, r7
+  v.push_back(0x0000); //nop
+  v.push_back(0x980F); //subi 15, r8
+  v.push_back(0x4205); //load r2, r5
+  v.push_back(0x0000); //nop
+  v.push_back(0x0000); //nop;
+  v.push_back(0x0258); //add r8, r2
+  v.push_back(0x4843); //stor r8, r3
+  v.push_back(0x0000); //nop
+  v.push_back(0x4445);//stor r4, r5
 
   PM.write(v);
 
@@ -114,12 +121,15 @@ int sc_main (int argc, char* argv[])
   sc_trace_file *fp =sc_create_vcd_trace_file("Processor");
 
   sc_trace(fp,clk,"CLOCK");
+  sc_trace(fp,rst,"reset");
   sc_trace(fp,instruction, "instruction");
   sc_trace(fp,raddr1, "Rsrc/decode");
-  sc_trace(fp,raddr2, "Rdest/decode");
-  sc_trace(fp,rout1, "RF[Rsrc]/RF");
-  sc_trace(fp,rout2, "RF[Rdest]/RF");
+  sc_trace(fp,Rdest, "Rdest/decode");
+  sc_trace(fp,rout1, "RF_Rsrc/RF");
+  sc_trace(fp,rout2, "RF_Rdest_/RF");
   sc_trace(fp,Rdest_out_wb, "Rdest/WB");
+  sc_trace(fp,Rdest_out, "Rdest/EXE");
+  sc_trace(fp,Rdest_out_mem, "Rdest/MEM");
   sc_trace(fp,c_load_store, "c_load_store/decode");
   sc_trace(fp,c_store, "c_store");
   sc_trace(fp,alu_data, "alu_result/exe");
@@ -127,15 +137,28 @@ int sc_main (int argc, char* argv[])
   sc_trace(fp,mar, "mar");
   sc_trace(fp,reg_write_out_wb, "reg_write/WB");
   sc_trace(fp, data_out_wb, "wb_data");
+  sc_trace(fp, imm, "imm/dec");
+  sc_trace(fp, c_imm, "is_imm");
+  sc_trace(fp, c_sub, "is_sub");
+
 
   sc_start(0, SC_NS); //Initialize simulation;
-  for(int i = 0; i<20; i++){
+
+  rst.write(0);
+  for(int i = 0; i<2; i++){
     clk = 0;
     sc_start(10, SC_NS);
     clk = 1;
     sc_start(10, SC_NS);
   }
 
+  rst.write(1);
+  for(int i = 0; i<25; i++){
+    clk = 0;
+    sc_start(10, SC_NS);
+    clk = 1;
+    sc_start(10, SC_NS);
+  }
   cout<<"End of simulation for program 1"<<endl;
   DM.print();
   RF.print();

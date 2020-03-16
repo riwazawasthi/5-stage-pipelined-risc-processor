@@ -11,12 +11,12 @@ void decode::decode_prc(){
   reg_write.write(1);
   dm_read.write(0);
   dm_write.write(0);
-
+  rf_r.write(1);
   raddr1.write(instruction.read().range(3,0));
   raddr2.write(instruction.read().range(11,8));
 
   imm.write(instruction.read().range(7,0));
-  Rdest.write(raddr2.read());
+  Rdest.write(instruction.read().range(11,8));
   PC_out.write(PC_in.read());
   alu_op.write(0);
 
@@ -80,8 +80,9 @@ void decode::decode_prc(){
           break;
 
         default:
-         reg_write.write(0);
+          reg_write.write(0);
           c_imm.write(0);
+
           break;
 
       }
@@ -107,6 +108,7 @@ void decode::decode_prc(){
 
     case 0b1001:
       alu_op.write(7);
+      c_sub.write(1);
       break;
 
     case 0b1010:
@@ -162,6 +164,7 @@ void decode::decode_prc(){
         default:
           reg_write.write(0);
           c_imm.write(0);
+
           break;
 
       }
@@ -200,6 +203,7 @@ void decode::decode_prc(){
         else{
           reg_write.write(0);
           c_imm.write(0);
+          rf_r.write(0);
 
         }
         break;
@@ -214,6 +218,7 @@ void decode::decode_prc(){
       default:
         reg_write.write(0);
         c_imm.write(0);
+
       break;
 
 

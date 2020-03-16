@@ -27,6 +27,6 @@ SC_MODULE(programMemory)
   SC_CTOR (programMemory)
   {
     SC_METHOD (programMemory_prc);
-    sensitive << rst<<clk.pos();
+    sensitive <<clk.pos();
   }
 };

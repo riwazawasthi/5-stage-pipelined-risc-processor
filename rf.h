@@ -8,7 +8,7 @@
 SC_MODULE(registerFile)
 {
   //---------------Ports declaration-------------
-        sc_in<bool>  rf_r_w;
+        sc_in<bool>  rf_r, rf_w;
         sc_in<sc_uint<4> > raddr1; // read register address 1
         sc_in<sc_uint<4> > raddr2; // read register address 2
         sc_in<sc_uint<4> > waddr; // write register address
@@ -19,13 +19,18 @@ SC_MODULE(registerFile)
 
         sc_uint<16>regdata[16] = {0};
 
-        void registerFile_prc();
+        void read_reg();
+        void write_reg();
         void write(sc_uint<16> a[], int size);
         void print();
         SC_CTOR (registerFile)
         {
-          SC_METHOD (registerFile_prc);
-          sensitive <<rf_r_w<<raddr1<<raddr2<<waddr<<rf_in;
+          SC_METHOD (read_reg);
+          sensitive <<rf_r<<raddr1<<raddr2;
+
+          SC_METHOD (write_reg);
+          sensitive <<rf_w<<waddr<<rf_in;
+
         }
         //End of constructor
 
