@@ -20,7 +20,8 @@ SC_MODULE(registerFile)
         sc_uint<16>regdata[16];
 
         void registerFile_prc();
-
+        void write(sc_uint<16> a[], int size);
+        void print();
         SC_CTOR (registerFile)
         {
           SC_METHOD (registerFile_prc);

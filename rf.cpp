@@ -14,3 +14,16 @@ void registerFile :: registerFile_prc()
   }
 
 }
+
+void registerFile::write(sc_uint<16> a[], int size){
+  for(int i=0; i<size; i++){
+    regdata[i] = a[i];
+  }
+}
+
+void registerFile::print(){
+  cout<<"********************************Register File*************************************************"<<endl;
+  for(int i=0; i<16; i++){
+    cout<<"R["<<i<<"]"<<" = "<<regdata[i]<<endl;
+  }
+}
