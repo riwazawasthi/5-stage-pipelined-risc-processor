@@ -2,25 +2,34 @@
 
 void programMemory::programMemory_prc()
 {
-if(rst){
-  if(br_taken.read()){
-     PC = PC_in.read();
-   }
-   if(PC<rom.size()){
+if(rst.read()&& !br_taken.read()){
+  if(PC<rom.size()){
      instr_out.write(rom[PC]);
+     PC=PC+1;
    }
    else{
      instr_out.write(0x0000);
    }
-   PC=PC+1;
+
    PC_to_reg.write(PC);
+   clear_pipeline.write(0);
+}
+else if(br_taken.read()){
+  clear_pipeline.write(1);
+  PC = PC_in.read();
+  PC_to_reg.write(0x0000);
+  instr_out.write(0x0000);
+
 }
  else{
    PC_to_reg.write(0x0000);
    PC = 0x0000;
    instr_out.write(0x0000);
+   clear_pipeline.write(0);
  }
 }
+
+
 
 void programMemory::read(){
   cout<<"******************Program Memory************************"<<endl;

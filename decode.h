@@ -2,6 +2,7 @@
 
 SC_MODULE(decode)
 {
+  sc_in<bool>clear_pipeline;
   sc_in<sc_uint<16>> instruction;
   sc_in<bool> clock;
   sc_in<sc_uint<16>> PC_in;
@@ -28,8 +29,6 @@ SC_MODULE(decode)
 
 
   sc_uint<4> opc1, opc2;
-
-
 
   void decode_prc();
 

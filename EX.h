@@ -7,6 +7,7 @@
 SC_MODULE(EX)
 {
 /*********Control signals*********************/
+  sc_in<bool>clear_pipeline;
   sc_in<bool> clk;
   sc_in<bool> c_imm; //immediate control
   sc_in<bool> c_sub; //subtract control
@@ -55,6 +56,7 @@ SC_MODULE(EX)
   {
     SC_METHOD(EX_prc);
     sensitive<<clk.pos();
+
   }
 
 };

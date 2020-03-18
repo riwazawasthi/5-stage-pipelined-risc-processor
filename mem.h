@@ -2,6 +2,7 @@
 
 SC_MODULE(MEM)
 {
+  sc_in<bool> clear_pipeline;
   sc_in<bool> clk;
   sc_in<sc_uint<16>> alu_result, PC_in;
   sc_in<sc_uint<16>> mar;
@@ -21,5 +22,6 @@ SC_MODULE(MEM)
   SC_CTOR(MEM){
     SC_METHOD(MEM_prc);
     sensitive<<clk.pos();
+
   }
 };

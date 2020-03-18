@@ -1,6 +1,7 @@
 #include "systemc.h"
 
 SC_MODULE(WB){
+  sc_in<bool> clear_pipeline;
   sc_in<bool> clk;
   sc_in<bool> reg_write;
   sc_in<sc_uint<16>> alu_result;
@@ -14,9 +15,10 @@ SC_MODULE(WB){
 
 
   void WB_prc();
-
+  
   SC_CTOR(WB){
     SC_METHOD(WB_prc);
     sensitive<<clk.neg();
+
   }
 };

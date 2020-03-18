@@ -1,6 +1,7 @@
 #include "decode.h"
 
 void decode::decode_prc(){
+ if(!clear_pipeline.read()){
   c_imm.write(1);
   c_sub.write(0);
   c_carry.write(0);
@@ -60,6 +61,7 @@ void decode::decode_prc(){
         case 0b1011:
           alu_op.write(12);
           reg_write.write(0);
+          c_sub.write(1);
           break;
 
         case 0b0001:
@@ -114,11 +116,13 @@ void decode::decode_prc(){
     case 0b1010:
       alu_op.write(9);
       c_carry.write(1);
+      c_sub.write(1);
       break;
 
     case 0b1011:
       alu_op.write(13);
       reg_write.write(0);
+      c_sub.write(1);
       break;
 
     case 0b0001:
@@ -223,8 +227,27 @@ void decode::decode_prc(){
 
 
   }
+}
+else{
+  c_imm.write(0);
+  c_sub.write(0);
+  c_carry.write(0);
+  c_mov.write(0);
+  c_jump.write(0);
+  c_store.write(0);
+  c_load_store.write(0);
+  reg_write.write(0);
+  dm_read.write(0);
+  dm_write.write(0);
+  rf_r.write(0);
+  raddr1.write(0x0);
+  raddr2.write(0x0);
+  imm.write(0x00);
+  Rdest.write(0x0);
+  alu_op.write(0);
+  PC_out.write(0x0000);
 
-
+}
 
 
 }

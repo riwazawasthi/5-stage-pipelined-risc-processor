@@ -2,7 +2,7 @@
 
 void EX::EX_prc()
 {
-
+ if(!clear_pipeline.read()){
   oprnd1 = 0;
   oprnd2 = 0;
   sub_bit = 0;
@@ -305,66 +305,66 @@ void EX::EX_prc()
    br_taken.write(1);
    if(Rdest.read() == 0){
      if(Z_flag.read()){
-       PC_alu.write(oprnd1);
+       PC_alu.write(oprnd1/2);
      }
    }
 
    else if (Rdest.read()== 1){
      if(Z_flag.read()==0){
-       PC_alu.write(oprnd1);
+       PC_alu.write(oprnd1/2);
      }
    }
 
    else if(Rdest.read() == 11){
      if(Z_flag.read() || N_flag.read()){
-       PC_alu.write(oprnd1);
+       PC_alu.write(oprnd1/2);
      }
    }
 
    else if(Rdest.read() == 2){
      if(C_flag.read()){
-       PC_alu.write(oprnd1);
+       PC_alu.write(oprnd1/2);
      }
    }
 
    else if(Rdest.read() == 3){
      if(!C_flag.read()){
-       PC_alu.write( oprnd1);
+       PC_alu.write( oprnd1/2);
      }
    }
 
    else if(Rdest.read() == 6){
      if(N_flag.read()){
-       PC_alu.write(oprnd1);
+       PC_alu.write(oprnd1/2);
      }
    }
 
    else if(Rdest.read() == 7){
      if(!N_flag.read()){
-       PC_alu.write(oprnd1);
+       PC_alu.write(oprnd1/2);
      }
    }
 
    else if(Rdest.read() == 8){
      if(F_flag.read()){
-       PC_alu.write(oprnd1);
+       PC_alu.write(oprnd1/2);
      }
    }
 
    else if(Rdest.read()==9){
      if(!F_flag.read()){
-       PC_alu.write(oprnd1);
+       PC_alu.write(oprnd1/2);
      }
    }
 
    else if(Rdest.read()==12){
      if(!N_flag.read() && !Z_flag.read()){
-       PC_alu.write(oprnd1);
+       PC_alu.write(oprnd1/2);
      }
    }
 
    else if(Rdest.read()==14){
-     PC_alu.write(oprnd1);
+     PC_alu.write(oprnd1/2);
    }
 
    else{
@@ -376,7 +376,7 @@ void EX::EX_prc()
   case 31:
     br_taken.write(1);
     result = PC;
-    PC_alu.write(oprnd2);
+    PC_alu.write(oprnd2/2);
     break;
 
   default:
@@ -387,6 +387,16 @@ void EX::EX_prc()
   alu_data.write(result.range(15,0));
   if(c_store.read()) {mdr.write(oprnd2.to_uint());}
   if(c_load_store.read()) {mar.write((result).to_uint());}
-
-
+}
+else{
+  alu_data.write(0x0000);
+  PC_alu.write(0);
+  br_taken.write(0);
+  Rdest_out.write(0);
+  reg_write_out.write(0);
+  dm_read_out.write(0);
+  dm_write_out.write(0);
+  mdr.write(0x0000);
+  mar.write(0x0000);
+}
 }

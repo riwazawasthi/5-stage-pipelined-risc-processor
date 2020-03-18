@@ -16,7 +16,7 @@ int sc_main (int argc, char* argv[])
   sc_signal<sc_uint<16>> instruction;
 
   programMemory PM("programMemory");//PROGRAM MEMORY
-  PM(instruction,clk,rst,PC_out_mem,br_taken_mem, PC_to_reg, clear_pipeline);
+  PM(instruction,clk,rst,PC_out_mem,br_taken_mem, PC_to_reg,clear_pipeline);
 
   sc_signal<bool> c_imm, c_sub, c_carry, c_mov, c_jump, c_store, c_load_store, reg_write, dm_read, dm_write;
   sc_signal<sc_uint<8>> imm;
@@ -78,45 +78,45 @@ int sc_main (int argc, char* argv[])
 
 
   sc_uint<16> a[16] = {0};
-  a[3] = 10;
-  a[5] = 12;
-  a[7] = 14;
-  a[8] = 12;
+  a[1] = 1;
+  a[2] = 2;
+  a[3] = 3;
+  a[4] = 4;
+  a[5] = 5;
+  a[6] = 6;
+  a[7] = 7;
+  a[8] = 8;
+  a[10] = 26;
 
   RF.write(a,16);
 
-  sc_uint<16> d[15] = {0};
-  d[10] = 36;
-  d[12] = 12;
-  d[14] = -24;
 
-  DM.write(d,15);
 
   std::vector<sc_uint<16>> v;
-  v.push_back(0x4203); //load r2, r3
   v.push_back(0x0000); //nop
-  v.push_back(0x4405); //load r4, r5
   v.push_back(0x0000); //nop
-  v.push_back(0x5811); //addi 17,r8
-  v.push_back(0x0452); //add r2, r4
-  v.push_back(0x4607); //load r6, r7
   v.push_back(0x0000); //nop
-  v.push_back(0x980F); //subi 15, r8
-  v.push_back(0x4205); //load r2, r5
   v.push_back(0x0000); //nop
-  v.push_back(0x0000); //nop;
-  v.push_back(0x0258); //add r8, r2
-  v.push_back(0x4843); //stor r8, r3
   v.push_back(0x0000); //nop
-  v.push_back(0x4445);//stor r4, r5
+  v.push_back(0x0152); //add r2, r1  //program starts from address 10. array index = address/2
+  v.push_back(0x0153); //add r3, r1
+  v.push_back(0x0154); //add r4, r1
+  v.push_back(0x0155); //add r5, r1
+  v.push_back(0xB10A); //cmpi 10,r1
+  v.push_back(0x41CA); //jne r10
+  v.push_back(0x0156); //add r6, r1
+  v.push_back(0x0157); //add r7, r1
+  v.push_back(0x0158); //add r8, r1
 
   PM.write(v);
 
-  cout<<"Initializing simulation with program 1"<<endl;
-
+  cout<<"*************************Initializing simulation with program 2*************************"<<endl;
+  cout<<endl;
   PM.read();
+  cout<<endl;
   RF.print();
-  DM.print();
+  cout<<endl;
+
 
   sc_trace_file *fp =sc_create_vcd_trace_file("Processor");
 
@@ -138,8 +138,9 @@ int sc_main (int argc, char* argv[])
   sc_trace(fp,reg_write_out_wb, "reg_write/WB");
   sc_trace(fp, data_out_wb, "wb_data");
   sc_trace(fp, imm, "imm/dec");
-  sc_trace(fp, c_imm, "is_imm");
-  sc_trace(fp, c_sub, "is_sub");
+  sc_trace(fp, br_taken_mem, "br_taken");
+  sc_trace(fp, PC_out_mem, "PC");
+
 
 
   sc_start(0, SC_NS); //Initialize simulation;
@@ -153,22 +154,17 @@ int sc_main (int argc, char* argv[])
   }
 
   rst.write(1);
-  for(int i = 0; i<25; i++){
+  for(int i = 0; i<30; i++){
     clk = 0;
     sc_start(10, SC_NS);
     clk = 1;
     sc_start(10, SC_NS);
   }
-  cout<<"End of simulation for program 1"<<endl;
-  DM.print();
+  cout<<"End of simulation for program 2"<<endl;
+  cout<<endl;
+
   RF.print();
   sc_close_vcd_trace_file(fp);
   return 0;
-
-
-
-
-
-
 
 }
